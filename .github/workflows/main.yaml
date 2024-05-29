@@ -1,0 +1,26 @@
+name: Build and Deploy Script
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    name: All Steps (Build, Test & Deploy)
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@main
+    - name: Adding Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16
+    - name: Install Dependencies
+      run: npm install
+    - name: Build Angular App
+      run: npm run build
+    - name: Deploy to gh pages
+      run: |
+        npx angular-cli-ghpages --dir=dist/IA_securite_urbaine
+      env:
+        CI: true
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
